@@ -11,10 +11,8 @@ RUN locale-gen en_US.UTF-8
 ENV LANG       en_US.UTF-8
 ENV LC_ALL     en_US.UTF-8
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
-    DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \    
+    DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
     software-properties-common \
     python-software-properties \
     build-essential \
@@ -39,7 +37,7 @@ RUN mkdir -p /usr/local/openssl/include/openssl/ && \
 
 # NODE JS
 RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
-    apt-get install nodejs -qq && \
+    apt-get install nodejs --no-install-recommends -yqq && \
     npm install -g gulp
 
 # YARN
@@ -49,7 +47,7 @@ RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
 RUN add-apt-repository -y ppa:ondrej/php && \
     DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yqq --no-install-recommends \
     php-pear \
     php7.1-dev \
     php7.1-mcrypt \
@@ -62,9 +60,9 @@ RUN add-apt-repository -y ppa:ondrej/php && \
     php7.1-tokenizer \
     php7.1-cli \
     php7.1-imap \
-    php7.1-gd
-    
-RUN DEBIAN_FRONTEND=noninteractive apt-get remove -y --purge php5 php5-common
+    php7.1-gd && \
+    apt-get remove -y --purge php5 php5-common && \
+    rm -r /var/lib/apt/lists/*
 
 # MONGO extension
 RUN pecl install mongodb && \
@@ -99,4 +97,7 @@ RUN composer selfupdate && \
     composer global require hirak/prestissimo --prefer-dist --no-interaction && \
     rm -rf /root/.composer/cache/*
 
-RUN apt-get clean -y && apt-get --purge autoremove -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get remove --purge autoconf g++ make -y && \
+    apt-get autoclean -y && \
+    apt-get --purge autoremove -y && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
