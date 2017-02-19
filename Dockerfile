@@ -52,7 +52,6 @@ RUN add-apt-repository -y ppa:ondrej/php && \
     php-pear \
     php7.1-dev \
     php7.1-mcrypt \
-    php7.1-zip \
     php7.1-xml \
     php7.1-mbstring \
     php7.1-curl \
