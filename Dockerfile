@@ -1,6 +1,9 @@
 FROM ubuntu:16.04
 
-MAINTAINER Eduardo Bizarro <edbizarro@gmail.com>
+LABEL maintainer "Eduardo Bizarro <eduardo@zendev.com.br>" \			
+			architecture="amd64" \
+			php="7.1" \
+      node="7"
 
 # Set correct environment variables
 ENV HOME="/root" \
@@ -25,8 +28,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     autoconf \
     g++ \
     make \
-    --no-install-recommends && rm -r /var/lib/apt/lists/* \
-    && apt-get --purge autoremove -y
+    --no-install-recommends
 
 # OpenSSL
 RUN mkdir -p /usr/local/openssl/include/openssl/ && \
@@ -44,7 +46,6 @@ RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
 # PHP Extensions
-
 RUN add-apt-repository -y ppa:ondrej/php && \
     DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -yqq --no-install-recommends \
@@ -93,11 +94,16 @@ ENV COMPOSER_HOME /root/composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Run phpunit installation.
-RUN composer selfupdate && \
-    composer global require hirak/prestissimo --prefer-dist --no-interaction && \
+RUN composer global require hirak/prestissimo --prefer-dist --no-interaction && \
     rm -rf /root/.composer/cache/*
 
-RUN apt-get remove --purge autoconf g++ make -y && \
-    apt-get autoclean -y && \
-    apt-get --purge autoremove -y && \
+RUN DEBIAN_FRONTEND=noninteractive apt-get remove --purge -y \
+    autoconf \
+    g++ \
+    make \
+    software-properties-common \
+    python-software-properties \
+    build-essential \
+    && apt-get autoclean -y \
+    && apt-get --purge autoremove -y && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
