@@ -28,6 +28,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     autoconf \
     g++ \
     make \
+    awscli \
     --no-install-recommends
 
 # OpenSSL
@@ -60,6 +61,8 @@ RUN add-apt-repository -y ppa:ondrej/php && \
     php7.1-tokenizer \
     php7.1-cli \
     php7.1-imap \
+    php7.1-zip \
+    php7.1-bcmath \
     php7.1-gd && \
     apt-get remove -y --purge php5 php5-common && \
     rm -r /var/lib/apt/lists/*
