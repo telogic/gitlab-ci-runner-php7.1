@@ -10,7 +10,7 @@ ENV HOME="/root" \
     PATH="~/.yarn/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 # Ensure UTF-8
-RUN locale-gen en_US.UTF-8
+#RUN locale-gen en_US.UTF-8
 ENV LANG       en_US.UTF-8
 ENV LC_ALL     en_US.UTF-8
 
@@ -47,7 +47,7 @@ RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
 # PHP Extensions
-RUN add-apt-repository -y ppa:ondrej/php && \
+RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
     DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -yqq --no-install-recommends \
     php-pear \
