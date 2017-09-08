@@ -29,6 +29,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     g++ \
     make \
     awscli \
+    ntpdate \
     --no-install-recommends
 
 # OpenSSL
