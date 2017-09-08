@@ -29,7 +29,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     g++ \
     make \
     awscli \
-    ntpdate \
+    python-pip \
     --no-install-recommends
 
 # OpenSSL
