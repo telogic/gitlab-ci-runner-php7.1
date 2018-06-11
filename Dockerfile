@@ -29,6 +29,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     g++ \
     make \
     awscli \
+    ssh-client \
     python-pip \
     --no-install-recommends
 
@@ -86,7 +87,7 @@ RUN wget --no-check-certificate https://xdebug.org/files/xdebug-2.5.0.tgz && \
     echo 'xdebug.remote_enable=1' >> /etc/php/7.1/cli/conf.d/20-xdebug.ini
 
 # Time Zone
-RUN echo "date.timezone=America/Sao_Paulo" > /etc/php/7.1/cli/conf.d/date_timezone.ini
+RUN echo "date.timezone=Europe/Madrid" > /etc/php/7.1/cli/conf.d/date_timezone.ini
 
 VOLUME /root/composer
 
